@@ -61,6 +61,7 @@ Game.init = function () {
   );
   this.camera.follow(this.hero);
   this.hero.scale(.7);
+  window.addEventListener("resize", this.detectResize.bind(this));
 };
 
 Game.update = function (delta) {
@@ -115,3 +116,15 @@ Game.render = function () {
 };
 
 
+Game.detectResize = function () {
+    // var w = document.documentElement.clientWidth;
+    // var h = document.documentElement.clientHeight;
+    this.ctx.canvas.width  = window.innerWidth;
+    this.ctx.canvas.height = window.innerHeight;
+    this.width = this.ctx.canvas.clientWidth;
+    this.height = this.ctx.canvas.clientHeight;
+    this.camera.reframe(this.map,
+        this.width/Tile.tsize,
+        this.height/Tile.tsize
+    );
+}
