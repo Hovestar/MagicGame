@@ -37,7 +37,6 @@ Chunk.prototype.pickBiome = function(next){
       break;
     }
   }
-  console.log(this.biome);
 }
 
 Chunk.prototype.drawTile = function(ctx,layer,x,y,ex,ey){
@@ -60,12 +59,11 @@ Chunk.prototype.generate = function(){
   for(var i=-1;i<=1;i++){
     next[i+1] = [];
     for(var j=-1;j<=1;j++){
-      next[i+1][j+1] = this.map._getChunk(x+i,y+j).biome;
+      next[i+1][j+1] = this.map._getChunk(this.x+i,this.y+j).biome;
     }
   }
   // next forces biome generation in all surrounding squares
   // later I'll use it to bleed biomes
-  
   this.tiles= [[],[]];
   for(var x=0;x<this.size;x++){
     this.tiles[x]=[];
