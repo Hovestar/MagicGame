@@ -50,7 +50,7 @@ var overlay = new Overlay();
 
 Game.init = function () {
   Keyboard.listenForEvents(
-    [Keyboard.LEFT, Keyboard.RIGHT, Keyboard.UP, Keyboard.DOWN]); //65-90 is a->z, and 48->57 is 0-9
+    [Keyboard.LEFT, Keyboard.RIGHT, Keyboard.UP, Keyboard.DOWN,Keyboard.KEY_E,Keyboard.ESC]); //65-90 is a->z, and 48->57 is 0-9
   overlay.setCtx(this.ctx);
   this.tileAtlas = Loader.getImage('tiles');
   this.map = new Map();
@@ -59,6 +59,7 @@ Game.init = function () {
     this.width/Tile.tsize,
     this.height/Tile.tsize
   );
+  this.mode = "walk"
   this.camera.follow(this.hero);
   this.hero.scale(.7);
   window.addEventListener("resize", this.detectResize.bind(this));
@@ -66,15 +67,24 @@ Game.init = function () {
 
 Game.update = function (delta) {
     // handle hero movement with arrow keys
-    var dirx = 0;
-    var diry = 0;
-    dirx -= Keyboard.isDown(Keyboard.LEFT);
-    dirx += Keyboard.isDown(Keyboard.RIGHT);
-    diry -= Keyboard.isDown(Keyboard.UP);
-    diry += Keyboard.isDown(Keyboard.DOWN);
-
-    this.hero.move(delta, dirx, diry);
-    this.camera.update();
+    if (Keyboard.isDown(Keyboard.KEY_E)){
+        this.mode = "talk"
+    } else if (Keyboard.isDown(Keyboard.ESC)){
+        this.mode = "walk"
+    }
+    if(this.mode == "walk"){
+        var dirx = 0;
+        var diry = 0;
+        dirx -= Keyboard.isDown(Keyboard.LEFT);
+        dirx += Keyboard.isDown(Keyboard.RIGHT);
+        diry -= Keyboard.isDown(Keyboard.UP);
+        diry += Keyboard.isDown(Keyboard.DOWN);
+    
+        this.hero.move(delta, dirx, diry);
+        this.camera.update();
+    }else if (this.mode == "talk"){
+        
+    }
 };
 
 Game._drawLayer = function (layer) {
