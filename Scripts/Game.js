@@ -59,6 +59,7 @@ Game.init = function () {
     this.width/Tile.tsize,
     this.height/Tile.tsize
   );
+  this.window = new Window(this.ctx);
   this.mode = "walk"
   this.camera.follow(this.hero);
   this.hero.scale(.7);
@@ -81,10 +82,11 @@ Game.update = function (delta) {
         diry += Keyboard.isDown(Keyboard.DOWN);
     
         this.hero.move(delta, dirx, diry);
-        this.camera.update();
     }else if (this.mode == "talk"){
-        
+        this.window.write(delta);
+        this.window.update(delta);
     }
+    this.camera.update();
 };
 
 Game._drawLayer = function (layer) {
@@ -123,6 +125,9 @@ Game.render = function () {
     this._drawLayer(1);
     
     overlay.render();
+    if (this.mode == "talk"){
+        this.window.render();
+    }
 };
 
 
