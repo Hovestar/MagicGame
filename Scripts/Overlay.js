@@ -1,4 +1,4 @@
-function Overlay(ctx){
+function Overlay(){
   this.text = "";
 };
 
