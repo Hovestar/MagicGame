@@ -69,9 +69,9 @@ Game.init = function () {
 Game.update = function (delta) {
     // handle hero movement with arrow keys
     if (Keyboard.isDown(Keyboard.KEY_E)){
-        this.mode = "talk"
+        this.mode = "talk";
     } else if (Keyboard.isDown(Keyboard.ESC)){
-        this.mode = "walk"
+        this.mode = "walk";
     }
     if(this.mode == "walk"){
         var dirx = 0;

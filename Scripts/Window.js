@@ -26,23 +26,22 @@ Window.prototype.render = function(){
    var leftSide = 500;
    var topSide = 250;
    var width = 1000;
-   var margin = 0;
+   var margin = 10;
    this.ctx.font = height+"px Arial";
-   this.ctx.fillStyle = "#000";
-   overlay.write(topSide+" - "); // Cause I want to know 
-   numLines = this.wrapText(leftSide+margin,topSide+margin,width-margin-margin,height*1.2);
-   this.ctx.font = oldFont;
-   overlay.write(oldFont); // Cause I want to know 
-   overlay.write(" - "+topSide); // Cause I want to know 
+   numLines = this.wrapText(leftSide+margin,topSide+height+margin,width-2*margin,height*1.2,false);
    
    this.ctx.fillStyle = "#FFF";
-   this.ctx.beginPath();
+   //this.ctx.beginPath();
    this.ctx.lineWidth = "6";
-   this.ctx.rect(leftSide,topSide, width, numLines+margin+margin);
+   this.ctx.rect(leftSide,topSide, width, numLines+2*margin);
    this.ctx.fill();
+
+   this.ctx.fillStyle = "#000";
+   this.wrapText(leftSide+margin,topSide+height+margin,width-2*margin,height*1.2,true);
+   this.ctx.font = oldFont;
 };
 
-Window.prototype.wrapText = function(x, y, maxWidth, lineHeight) {
+Window.prototype.wrapText = function(x, y, maxWidth, lineHeight,write) {
    var words = this.text.split(' ');
    var line = '';
    var startBuffer = y-lineHeight; // rather meaningless, but it makes the size calculation better. 
@@ -52,7 +51,9 @@ Window.prototype.wrapText = function(x, y, maxWidth, lineHeight) {
       var metrics = this.ctx.measureText(testLine);
       var testWidth = metrics.width;
       if (testWidth > maxWidth && n > 0) {
-         this.ctx.fillText(line, x, y);
+         if(write){
+            this.ctx.fillText(line, x, y);
+         }
          line = words[n] + ' ';
          y += lineHeight;
       }
@@ -60,6 +61,8 @@ Window.prototype.wrapText = function(x, y, maxWidth, lineHeight) {
          line = testLine;
       }
    }
-   this.ctx.fillText(line, x, y);
+   if (write){
+      this.ctx.fillText(line, x, y);
+   }
    return y-startBuffer;
 }
